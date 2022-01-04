@@ -39,7 +39,7 @@ Signed-off-by: hmz007 <hmz007@gmail.com>
  obj-$(CONFIG_QSEMI_PHY)		+= qsemi.o
 --- /dev/null
 +++ b/drivers/net/phy/motorcomm.c
-@@ -0,0 +1,345 @@
+@@ -0,0 +1,367 @@
 +/*
 + * drivers/net/phy/motorcomm.c
 + *
@@ -365,6 +365,26 @@ Signed-off-by: hmz007 <hmz007@gmail.com>
 +		.config_intr	= yt8521_config_intr,
 +		.suspend	= genphy_suspend,
 +		.resume		= genphy_resume,
++	}, {
++		/* same as 8521 */
++		.phy_id		= PHY_ID_YT8531S,
++		.name		= "YT8531S Ethernet",
++		.phy_id_mask	= MOTORCOMM_PHY_ID_MASK,
++		/* PHY_GBIT_FEATURES */
++		.config_init	= yt8521_config_init,
++		.ack_interrupt	= yt8521_ack_interrupt,
++		.config_intr	= yt8521_config_intr,
++		.suspend	= genphy_suspend,
++		.resume		= genphy_resume,
++	}, {
++		/* same as 8511 */
++		.phy_id		= PHY_ID_YT8531,
++		.name		= "YT8531 Gigabit Ethernet",
++		.phy_id_mask	= MOTORCOMM_PHY_ID_MASK,
++		.features	= PHY_GBIT_FEATURES,
++		.read_status	= genphy_read_status,
++		.suspend	= genphy_suspend,
++		.resume		= genphy_resume,
 +	},
 +};
 +
@@ -381,13 +401,15 @@ Signed-off-by: hmz007 <hmz007@gmail.com>
 +	{ PHY_ID_YT8512, MOTORCOMM_PHY_ID_MASK },
 +	{ PHY_ID_YT8512B, MOTORCOMM_PHY_ID_MASK },
 +	{ PHY_ID_YT8521, MOTORCOMM_PHY_ID_MASK },
++	{ PHY_ID_YT8531S, MOTORCOMM_PHY_ID_8531_MASK },
++	{ PHY_ID_YT8531, MOTORCOMM_PHY_ID_8531_MASK },
 +	{ }
 +};
 +
 +MODULE_DEVICE_TABLE(mdio, motorcomm_tbl);
 --- /dev/null
 +++ b/include/linux/motorcomm_phy.h
-@@ -0,0 +1,67 @@
+@@ -0,0 +1,70 @@
 +/*
 + * include/linux/motorcomm_phy.h
 + *
@@ -404,6 +426,7 @@ Signed-off-by: hmz007 <hmz007@gmail.com>
 +#define _MOTORCOMM_PHY_H
 +
 +#define MOTORCOMM_PHY_ID_MASK	0x00000fff
++#define MOTORCOMM_PHY_ID_8531_MASK	0xffffffff
 +
 +#define PHY_ID_YT8010		0x00000309
 +#define PHY_ID_YT8510		0x00000109
@@ -411,6 +434,8 @@ Signed-off-by: hmz007 <hmz007@gmail.com>
 +#define PHY_ID_YT8512		0x00000118
 +#define PHY_ID_YT8512B		0x00000128
 +#define PHY_ID_YT8521		0x0000011a
++#define PHY_ID_YT8531S		0x4f51e91a
++#define PHY_ID_YT8531		0x4f51e91b
 +
 +#define REG_PHY_SPEC_STATUS		0x11
 +#define REG_INT_MASK			0x12
