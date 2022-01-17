@@ -439,6 +439,8 @@
 	};
 
 	crypto@1e004000 {
+		status = "okay";
+
 		compatible = "mediatek,mtk-eip93";
 		reg = <0x1e004000 0x1000>;
 
